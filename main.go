@@ -12,6 +12,8 @@ import (
 	_ "embed"
 
 	"github.com/cloudflare/cloudflare-go"
+	"github.com/fatih/color"
+	"golang.org/x/term"
 )
 
 //go:embed .secrets.json
@@ -32,12 +34,24 @@ func init() {
 		key = data.Token
 		email = data.Email
 	}
+	if key == "" || email == "" {
+		fmt.Print("Enter your Cloudflare email: ")
+		fmt.Scanln(&email)
+		color.Green("Enter your Cloudflare API key: (input will be hidden)")
+
+		byteKey, err := term.ReadPassword(int(os.Stdin.Fd()))
+		if err != nil {
+			color.Red(err.Error())
+		}
+		key = string(byteKey)
+		fmt.Println()
+	}
+	log.Printf("the email is: %s - api key is: %s", email, key)
 	api, err = cloudflare.New(key, email)
 	if err != nil {
-		fmt.Println(err)
+		log.Printf("error in cf init: %s", err)
 		os.Exit(1)
 	}
-
 }
 
 func main() {
@@ -54,12 +68,14 @@ func main() {
 	if zoneID == nil || *zoneID == "" {
 		tld := strings.Split(*dnsName, ".")
 		if len(tld) < 2 {
+			color.Red("invalid domain")
 			os.Exit(1)
 		}
 		zoneTld = tld[1] + "." + tld[2]
 		log.Printf("the tld is: %s", zoneTld)
 		*zoneID, err = getZoneID(zoneTld)
 		if err != nil {
+			color.Red(err.Error())
 			os.Exit(1)
 		}
 		log.Printf("the zone is: %s", zoneID)
@@ -79,7 +95,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	fmt.Println("DNS record created successfully.")
+	color.Green("DNS record created successfully.")
 }
 
 func getZoneID(domain string) (string, error) {
