@@ -3,14 +3,17 @@ Cloudflare DNS Record Creator
 Simple program to automate cloudflare dns configurations.
 
 
-
 ## Getting Started
 To use this tool, you first need to set up your Cloudflare API key and email. These can be provided either as environment variables (CF_API_KEY and CF_EMAIL) or in a .secrets.json file in the following format:
 
+```json
 {
   "email": "your-email@example.com",
   "api_key": "your-api-key"
 }
+```
+
+
 The tool will first try to read from the environment variables. If these are not set, it will fall back to the .secrets.json file.
 
 ## Installation
