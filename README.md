@@ -17,12 +17,10 @@ The tool will first try to read from the environment variables. If these are not
 
 You can install the tool using the go install command:
 
-go install github.com/<your-github-username>/<your-repo-name>@latest
-Replace <your-github-username> and <your-repo-name> with your GitHub username and the name of your repository. The binary will be saved in the bin directory of your Go workspace (by default, $HOME/go/bin on Unix systems).
+go install github.com/adonese/cf@latest
+The binary will be saved in the bin directory of your Go workspace (by default, $HOME/go/bin on Unix systems).
 
-If your Go workspace's bin directory is in your system's PATH, you can run your application by typing its name:
-
-<your-repo-name>
+If your Go workspace's bin directory is in your system's PATH, you can run your application by typing its name: `cf``
 
 ## Usage
 You can run the tool with the following command-line flags:
