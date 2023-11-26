@@ -20,7 +20,8 @@ The tool will first try to read from the environment variables. If these are not
 
 You can install the tool using the go install command:
 
-go install github.com/adonese/cf@latest
+`go install github.com/adonese/cf@latest`
+
 The binary will be saved in the bin directory of your Go workspace (by default, $HOME/go/bin on Unix systems).
 
 If your Go workspace's bin directory is in your system's PATH, you can run your application by typing its name: `cf``
