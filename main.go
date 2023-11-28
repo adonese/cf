@@ -63,22 +63,22 @@ func main() {
 
 	flag.Parse()
 
-	var zoneTld string
-
 	if zoneID == nil || *zoneID == "" {
 		tld := strings.Split(*dnsName, ".")
 		if len(tld) < 2 {
 			color.Red("invalid domain")
 			os.Exit(1)
 		}
-		zoneTld = tld[1] + "." + tld[2]
-		log.Printf("the tld is: %s", zoneTld)
-		*zoneID, err = getZoneID(zoneTld)
-		if err != nil {
-			color.Red(err.Error())
+		// change this to be the last two indices (to support sub-subdomains)
+		if len(tld) < 3 {
+			color.Red("invalid domain")
 			os.Exit(1)
 		}
-		log.Printf("the zone is: %s", zoneID)
+		*zoneID, err = getZoneID(strings.Join(tld[len(tld)-2:], "."))
+		if err != nil {
+			fmt.Printf("error getting zone ID: %s", err)
+			os.Exit(1)
+		}
 	}
 
 	params := cloudflare.CreateDNSRecordParams{
